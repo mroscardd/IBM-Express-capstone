@@ -1,0 +1,28 @@
+services:
+  mongo:
+    image: mongo
+    container_name: mongo_run
+    networks:
+      - my_network  
+    ports:
+      - 27020:27017  
+    volumes:
+      - mongo_storage:/data/db
+  app:
+    build: .
+    image: ibm
+    networks:
+      - my_network
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      
+volumes:
+  mongo_storage:
+    external: true
+
+networks:
+  my_network:
+    driver: bridge
